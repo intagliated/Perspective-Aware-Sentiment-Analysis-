@@ -3,7 +3,7 @@
 ## Project Overview
 Traditional sentiment analysis models often assign a fixed label (Positive, Negative, Neutral) to text based on general patterns.However, sentiment is often **subjective** and dependent on the reader's point of view.
 
-This project compares **Traditional Models** (RoBERTa) against **Large Language Models** (GPT-4o) to demonstrate **Perspective-Aware Sentiment Analysis**. While traditional models focus on the text's structural polarity, LLMs can adopt specific **personas** (e.g., "I am a sports fan" or "I support a specific political party") to provide context-aware sentiment scoring.
+This project compares **Traditional Models** (RoBERTa) against **Large Language Models** (gpt-4o-mini) to demonstrate **Perspective-Aware Sentiment Analysis**. While traditional models focus on the text's structural polarity, LLMs can adopt specific **personas** (e.g., "I am a sports fan" or "I support a specific political party") to provide context-aware sentiment scoring.
 
 ## Data Used
 Real-time news data was fetched using the **Google News RSS feed** via the `feedparser` library. The system extracts headlines, links, and publication dates for analysis.
