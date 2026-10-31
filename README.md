@@ -1,38 +1,32 @@
-# Perspective Aware Sentiment Analysis
+# Perspective-Aware Sentiment Analysis via Multi-Agent Debate
 
-## Project Overview
-Traditional sentiment analysis models often assign a fixed label (Positive, Negative, Neutral) to text based on general patterns.However, sentiment is often **subjective** and dependent on the reader's point of view.
+##  Problem
+Traditional sentiment analysis (e.g., RoBERTa) assigns a single polarity label to text, 
+ignoring that sentiment is inherently subjective and dependent on the reader's perspective.
 
-This project compares **Traditional Models** (RoBERTa) against **Large Language Models** (gpt-4o-mini) to demonstrate **Perspective-Aware Sentiment Analysis**. While traditional models focus on the text's structural polarity, LLMs can adopt specific **personas** (e.g., "I am a sports fan" or "I support a specific political party") to provide context-aware sentiment scoring.
+##  Solution
+This project implements a **multi-agent debate framework** where specialized LLM agents 
+collaborate to produce explainable, perspective-aware sentiment scores.
 
-## Data Used
-Real-time news data was fetched using the **Google News RSS feed** via the `feedparser` library. The system extracts headlines, links, and publication dates for analysis.
+##  Architecture
 
-**Source:** Google News RSS (Search Query: "election", "sports", etc.) 
-**Libraries:** `feedparser`, `transformers`, `openai`
+The system consists of four specialized agents orchestrated via LangGraph:
 
-| Title | Source | Date |
-| :--- | :--- | :--- |
-| Kerala Local Body Elections Scheduled... | Newsonair | 2025-11-13 |
-| Bihar Election 2025 LIVE Updates... | The Economic Times | 2025-11-13 |
-| Milwaukee Bucks star Giannis sustained... | N/A (Text Input) | N/A |
+| Agent | Role |
+|-------|------|
+|  **Stakeholder Advocate** | Argues why the text evokes sentiment from a specific persona's viewpoint |
+|  **Context Expert** | Provides objective, real-world background to ground the discussion |
+|  **Skeptic** | Challenges emotional overreactions and logical leaps |
+| **Supervisor/Judge** | Synthesizes the debate into a final score (-1.0 to 1.0) with rationale |
 
-Understanding sentiment requires context. For example, a sports injury report is factually "Neutral" to a machine but deeply "Negative" to a fan of that team By leveraging LLMs, this project highlights the shift from **static classification** to **dynamic, personalized content analysis**, which is crucial for next-generation recommendation systems and media monitoring .
+## 🔧 Tech Stack
+- **Orchestration:** LangGraph (stateful multi-agent workflows)
+- **LLM Backend:** Groq (open-weight models via `openai/gpt-oss-120b`)
+- **Data Ingestion:** Google News RSS via `feedparser`
+- **Baseline Comparison:** HuggingFace `twitter-roberta-base-sentiment`
 
-We compared a standard Hugging Face pipeline (`twitter-roberta-base-sentiment`) against OpenAI's `gpt-4o-mini` with custom system prompts.
+##   Example Output
 
-**Test Case:** *Headline about Giannis Antetokounmpo sustaining a groin strain.**.
+**Headline:** *"Giannis sits out third consecutive game amid load management concerns."*  
+**Perspective:** *"I am a devoted Milwaukee Bucks fan who pays for tickets."*
 
-| Model | Perspective | Detected Sentiment | Confidence/Score |
-| :--- | :--- | :--- | :--- |
-| **RoBERTa (Traditional)** | General/None | **Neutral** | 0.593 |
-| **GPT-4o (LLM)** | "I am a fan of Giannis" | **Negative** | 0.12 |
-
-As shown above, the Traditional model viewed the injury report as a neutral fact, whereas the Perspective-Aware model correctly identified it as negative for a fan.
-
-**Political Context Test:**
-When analyzing election news with the prompt *"I don't support BJP"*, the model successfully identified news about an opposition victory as **Positive** and ruling party confidence as **Negative**, demonstrating high adaptability.
-
-## Links
-* **Code/Notebook:** [Perspective_Aware_Sentiment_Analysis.ipynb](Perspective_Aware_Sentiment_Analysis.ipynb)
-* **Presentation:** [Applied_Data_Analytics_Project_Slides](Applied_Data_Analytics_Project_Slides)
